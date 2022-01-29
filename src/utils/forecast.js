@@ -1,7 +1,7 @@
 const request = require('request')
 
 const forecast = (latitude, longitude, callback) => {
-    const url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + encodeURIComponent(latitude) + '&lon=' + encodeURIComponent(longitude) + '&exclude=daily,minutely&appid=9c6954d79680efb07b3b4bf7ab95c55a'
+    const url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + encodeURIComponent(latitude) + '&lon=' + encodeURIComponent(longitude) + '&units=metric&exclude=minutely&appid=9c6954d79680efb07b3b4bf7ab95c55a'
 
     request({ url, json: true }, (error, {body}) => {
         if(error){
@@ -10,10 +10,8 @@ const forecast = (latitude, longitude, callback) => {
             callback('unable to search',undefined)
         }
         else{
-            callback(undefined, {
-                timezone: body.timezone,
-                temp: body.current.temp
-            })
+            callback(undefined, 'It is currently '+body.current.temp+' degrees out there. \n Pressure is ' + body.current.pressure + ' hPa. \n Humidity is ' + body.current.humidity + ' %. Cloudiness ' + body.current.clouds + ' %. \n UV index is ' + body.current.uvi + '. \n todays maximum temp is ' + body.daily[0].temp.max + ' degrees and minimum temp is '+ body.daily[0].temp.min + ' degrees.')
+            // callback(undefined, `It is currently ${body.current.temp} degrees out there. \n Pressure is ${body.current.pressure} hPa \n Humidity is ${body.current.humidity} % Cloudiness ${body.current.clouds} % \n`)
         }
     })
 }
